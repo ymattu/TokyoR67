@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="@y__mattu" />
+  <title>初心者セッション 1   データ読み込み編</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="slide_files/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #ffffff; color: #1f1c1b; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #ffffff; color: #a0a0a0; border-right: 1px solid #a0a0a0; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #1f1c1b; background-color: #ffffff; }
+code > span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code > span.dt { color: #0057ae; } /* DataType */
+code > span.dv { color: #b08000; } /* DecVal */
+code > span.bn { color: #b08000; } /* BaseN */
+code > span.fl { color: #b08000; } /* Float */
+code > span.cn { color: #aa5500; } /* Constant */
+code > span.ch { color: #924c9d; } /* Char */
+code > span.sc { color: #3daee9; } /* SpecialChar */
+code > span.st { color: #bf0303; } /* String */
+code > span.vs { color: #bf0303; } /* VerbatimString */
+code > span.ss { color: #ff5500; } /* SpecialString */
+code > span.im { color: #ff5500; } /* Import */
+code > span.co { color: #898887; } /* Comment */
+code > span.do { color: #607880; } /* Documentation */
+code > span.an { color: #ca60ca; } /* Annotation */
+code > span.cv { color: #0095ff; } /* CommentVar */
+code > span.ot { color: #006e28; } /* Other */
+code > span.fu { color: #644a9b; } /* Function */
+code > span.va { color: #0057ae; } /* Variable */
+code > span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #1f1c1b; } /* Operator */
+code > span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code > span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code > span.pp { color: #006e28; } /* Preprocessor */
+code > span.at { color: #0057ae; } /* Attribute */
+code > span.re { color: #0057ae; } /* RegionMarker */
+code > span.in { color: #b08000; } /* Information */
+code > span.wa { color: #bf0303; } /* Warning */
+code > span.al { color: #bf0303; font-weight: bold; } /* Alert */
+code > span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code > span. { color: #1f1c1b; } /* Normal */
+</style>
+
+<link rel="stylesheet" href="slide_files/reveal.js-3.3.0.1/css/theme/sky.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+    <link rel="stylesheet" href="for_revealjs.css"/>
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+    <link href="slide_files/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="slide_files/htmlwidgets-0.9/htmlwidgets.js"></script>
+    <script src="slide_files/viz-0.3/viz.js"></script>
+    <link href="slide_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="slide_files/grViz-binding-0.9.2/grViz.js"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">初心者セッション 1 <br> データ読み込み編</h1>
+    <h2 class="author"><span class="citation" data-cites="y__mattu">@y__mattu</span></h2>
+    <h3 class="date">2017/12/16 Tokyo.R #66</h3>
+</section>
+
+<section><section class="titleslide slide level1"><h1>はじめに</h1></section><section class="slide level2">
+<h2>誰？</h2>
+<div class="column1">
+<ul>
+<li>松村優哉</li>
+<li><u>Twitter</u>: <strong>y__mattu</strong></li>
+<li><u>GitHub</u>: <strong>ymattu</strong></li>
+<li>M1</li>
+<li>計量経済学、ベイズ統計、因果推論、マーケティング</li>
+<li>言語: R(歴は 3 年), SAS, Python</li>
+<li><a href="https://ymattu.github.io/" class="uri">https://ymattu.github.io/</a></li>
+<li><a href="http://y-mattu.hatenablog.com/" class="uri">http://y-mattu.hatenablog.com/</a></li>
+<li>Tokyo.R / Japan.R 運営</li>
+</ul>
+</div>
+<div class="column2">
+<p><img src="slide_img/twitter_icon.jpg" alt="icon" /></p>
+</div>
+</section><section class="slide level2">
+<h2>アルバイトとか</h2>
+<ul>
+<li>コミュニケーションアプリの分析</li>
+<li>Web 広告のログ解析</li>
+<li>電子コミックと医療システムに関する解析と開発 <br> ←イマココ</li>
+<li>たまに受託(お仕事募集中です)</li>
+</ul>
+</section><section class="slide level2">
+<h2>著書(共著)</h2>
+<p><img src="slide_img/datasci.jpg" alt="book" /></p>
+</section><section class="slide level2">
+<h2>作ったパッケージ</h2>
+<h3 id="mlbayesopt"><a href="https://github.com/ymattu/MlBayesOpt">MlBayesOpt</a></h3>
+<ul>
+<li>機械学習のパラメーターをベイズ最適化でチューニングする R パッケージ</li>
+<li>メンテ頑張ります…</li>
+</ul>
+<h3 id="rjumanpp"><a href="https://github.com/ymattu/rjumanpp">rjumanpp</a></h3>
+<ul>
+<li>形態素解析機 JUMAN++の R ラッパー</li>
+<li>最低限の機能しかないのでメンテ頑張ります…</li>
+</ul>
+</section></section>
+<section><section id="r-" class="titleslide slide level1"><h1>さあ、R でデータ分析だ!</h1></section><section class="slide level2">
+<h2>データ分析の流れ</h2>
+<div id="htmlwidget-77ca0454271811bb8c1a" style="width:300px;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-77ca0454271811bb8c1a">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ取得;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      前処理; 可視化・モデリング;\n\n      # edge\n      データ取得->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</section></section>
+<section><section id="-1" class="titleslide slide level1"><h1>データ分析の流れ</h1></section><section class="slide level2">
+<h2>「<strong>データの読み込み</strong>」ですよね</h2>
+<p>R で分析するためには、データを R に読み込まなければなりません。</p>
+</section><section class="slide level2">
+<h2>こんな場面を想像してください</h2>
+<p>(データ分析の方針がだいたい決まったので) <br> <strong>あなた</strong>「(上司)さん、R の環境整えたんでデータください!」<br> <strong>上司</strong>「OK、購買データはあの <strong>tsv</strong>ファイルで、商品マスタはあっちの <strong>csv</strong>。それぞれ <strong>100MB</strong> くらいだったかな。それと EC サイトのアクセスログは <strong>データベース</strong>にあって、データ定義は <strong>エクセル</strong>で来てるからあとで送るね。」<br> <strong>あなた</strong>「りょ、了解です。(データ形式くらい統一しとけよ…)」<br></p>
+</section><section class="slide level2">
+<h2>悲しいことに。。。</h2>
+<ul>
+<li>上記は、多少盛ってますが実話です。</li>
+<li>データの読み込みに関しては、素人玄人関係なく同じ問題にぶつかります。
+<ul>
+<li>データの形式(拡張子)はバラバラ</li>
+</ul></li>
+</ul>
+</section><section id="howtodeal" class="slide level2">
+<h2>R でこれに対処するには？</h2>
+<ol start="0" type="1">
+<li>RStudio でプロジェクトを作成
+<ul>
+<li>ファイルの位置が分かりやすくなります</li>
+</ul></li>
+<li>様々な読み込み関数を使って読み込み
+<ul>
+<li><strong>ローカルにあるファイル</strong>(今日の中心)</li>
+<li><strong>データベース</strong>(今日は少しだけ)</li>
+<li>Web スクレイピング(またの機会に…)</li>
+</ul></li>
+</ol>
+</section></section>
+<section><section id="rstudio-" class="titleslide slide level1"><h1>RStudio でプロジェクトを作成</h1></section><section id="project-new-project" class="slide level2">
+<h2>Project → New Project</h2>
+<p><img src="slide_img/project1.png" alt="project1" /></p>
+</section><section id="newproj" class="slide level2">
+<h2>New Directory → New Project</h2>
+<div class="column1">
+<p><img src="slide_img/newdir.png" alt="newdir" /></p>
+</div>
+<div class="column2">
+<p><img src="slide_img/newproj.png" alt="newproj" /></p>
+</div>
+</section><section class="slide level2">
+<h2>ディレクトリ名を入力</h2>
+<p><img src="slide_img/dirname.png" alt="dirname" /></p>
+</section><section id="done" class="slide level2">
+<h2>Done!</h2>
+<ul>
+<li>読み込みの関数は、プロジェクトの中のファイルを探しにいきます。</li>
+<li><code>setwd()</code> を書く必要はありません</li>
+</ul>
+</section></section>
+<section><section class="titleslide slide level1"><h1>いよいよデータの読み込み</h1></section><section class="slide level2">
+<h2>の前にもうひとつだけ</h2>
+<h3>パッケージ内の関数の表記</h3>
+<p>readr パッケージの read_csv 関数を使いたいとき</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 方法 1</span>
+<span class="kw">library</span>(readr)
+dat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;hoge.csv&quot;</span>)
+
+<span class="co"># 方法 2</span>
+dat &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;hoge.csv&quot;</span>)</code></pre></div>
+</section></section>
+<section><section class="titleslide slide level1"><h1>ローカルにあるファイル</h1></section></section>
+<section><section id="csv" class="titleslide slide level1"><h1>csv</h1></section><section id="read.csv" class="slide level2">
+<h2><code>read.csv()</code></h2>
+<ul>
+<li>多くの人が最初に習う関数</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;sample.csv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+</section><section id="readrread_csv" class="slide level2">
+<h2><code>readr::read_csv()</code></h2>
+<ul>
+<li>高速で、列の方をいい感じにやってくれる(オススメ)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+dat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;sample.csv&quot;</span>)</code></pre></div>
+</section><section id="data.tablefread" class="slide level2">
+<h2><code>data.table::fread()</code></h2>
+<ul>
+<li><code>readr::read_csv</code> よりも高速</li>
+<li>デフォルトでは、data.table というデータフレームとは別の形で読み込まれるのでデータフレームがいいときは <code>data.table = FALSE</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
+dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;sample.csv&quot;</span>, <span class="dt">data.table =</span> <span class="ot">FALSE</span>)</code></pre></div>
+</section><section class="slide level2">
+<h2>高速ってどのくらい速いの？</h2>
+<div class="column1">
+<h3>検証用データ</h3>
+<ul>
+<li>Web ログデータ</li>
+<li>csv</li>
+<li>300 万行× 5 列</li>
+<li>約 500MB</li>
+</ul>
+</div>
+<div class="column2">
+<h3>検証環境</h3>
+<ul>
+<li>macOS High Sierra 10.13.2</li>
+<li>Corei7</li>
+<li>メモリ 16GB</li>
+<li>R 3.4.3</li>
+</ul>
+</div>
+</section><section class="slide level2">
+<h2>時間を計測</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))
+<span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))
+<span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
+</section></section>
+<section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.tsv" class="slide level2">
+<h2><code>read.tsv()</code></h2>
+<ul>
+<li><code>read.delim()</code>は区切り値のファイルを読む標準関数</li>
+<li><code>read.csv()</code>は <code>sep = &quot;,&quot;</code>をつけたもの</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+</section><section id="readrread_tsv" class="slide level2">
+<h2><code>readr::read_tsv</code></h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+dat &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;sample.tsv&quot;</span>)</code></pre></div>
+</section><section id="fread2" class="slide level2">
+<h2><code>data.table::fread()</code></h2>
+<ul>
+<li>区切り値は勝手に判断</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
+dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">data.table =</span> <span class="ot">FALSE</span>)</code></pre></div>
+</section></section>
+<section><section class="titleslide slide level1"><h1>その他の区切り値</h1></section><section id="read.delim" class="slide level2">
+<h2><code>read.delim()</code></h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>, <span class="dt">sep =</span> <span class="st">&quot;|&quot;</span>)</code></pre></div>
+</section><section id="readrread_delim" class="slide level2">
+<h2><code>readr::read_delim()</code></h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+dat &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="st">&quot;|&quot;</span>)</code></pre></div>
+</section><section id="fread3" class="slide level2">
+<h2><code>data.table::fread()</code></h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
+dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">data.table =</span> <span class="ot">FALSE</span>)</code></pre></div>
+</section></section>
+<section><section class="titleslide slide level1"><h1>結局？</h1></section><section class="slide level2">
+<h2>どれがいいのか</h2>
+<ul>
+<li><strong>readr</strong>パッケージの <code>read_***()</code>関数が一番オススメ</li>
+<li>速い、エンコーディングの調整が難しくない(後述)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>read.***</th>
+<th>read_***</th>
+<th>fread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>速さ(500MB)</td>
+<td>約 1 分</td>
+<td>8 秒</td>
+<td>3 秒</td>
+</tr>
+<tr class="even">
+<td>区切り地値の判定ミス</td>
+<td>×</td>
+<td>×</td>
+<td>△</td>
+</tr>
+<tr class="odd">
+<td>エンコーディング</td>
+<td>○</td>
+<td>○</td>
+<td>△</td>
+</tr>
+</tbody>
+</table>
+</section></section>
+<section><section id="xlsx-xls" class="titleslide slide level1"><h1>xlsx, xls</h1></section><section class="slide level2">
+<h2>エクセルファイル</h2>
+<h3>エクセルファイルを読み込めるパッケージ</h3>
+<ul>
+<li>xlsx</li>
+<li>gdata</li>
+<li>XLConnect</li>
+<li>openxlsx</li>
+<li><strong>redxl</strong> → オススメ(速い、列の型をいい感じに読める)</li>
+</ul>
+</section><section class="slide level2">
+<h2>読み込み方</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&quot;sample.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;シート名&quot;</span>)
+<span class="co"># シート名はシート番号でも OK</span></code></pre></div>
+</section></section>
+<section><section class="titleslide slide level1"><h1>その他の拡張子</h1></section><section id="sas.sas7bdat-stata.dta-spss.sav" class="slide level2">
+<h2>SAS(.sas7bdat), STATA(.dta), SPSS(.sav)形式のファイル</h2>
+<p><strong>haven</strong> パッケージで読み込み</p>
+<h4 id="sas">SAS</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>haven<span class="op">::</span><span class="kw">read_sas</span>(<span class="st">&quot;sample.sas7bdat&quot;</span>)</code></pre></div>
+<h4 id="stata">STATA</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>haven<span class="op">::</span><span class="kw">read_dta</span>(<span class="st">&quot;sample.dta&quot;</span>)</code></pre></div>
+<h4 id="spss">SPSS</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>haven<span class="op">::</span><span class="kw">read_sav</span>(<span class="st">&quot;sample.sav&quot;</span>)</code></pre></div>
+</section></section>
+<section><section class="titleslide slide level1"><h1>文字コードの指定</h1></section><section class="slide level2">
+<h2>エンコーディング問題</h2>
+<ul>
+<li>Windows の文字コードは <strong>Shift-JIS（CP932）</strong></li>
+<li>Mac の文字コードは <strong>UTF8</strong></li>
+<li>Windows で作られた（日本語を含む）ファイルを Mac で読むときは <code>Encoding=cp932</code></li>
+<li>Mac で作られた（日本語を含む）ファイルを Windows で読むときは <code>Encoding=UTF8</code></li>
+</ul>
+</section><section id="csv--cp932-" class="slide level2">
+<h2>csv を CP932 で読む</h2>
+<h3 id="r-">R の標準関数</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;sample.csv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>, <span class="dt">fileEncoding =</span> <span class="st">&quot;cp932&quot;</span>)</code></pre></div>
+<h3 id="readr">readr</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;sample.csv&quot;</span>, <span class="dt">locale =</span> <span class="kw">locale</span>(<span class="dt">encoding =</span> <span class="st">&quot;cp932&quot;</span>))</code></pre></div>
+<h3 id="data.table">data.table</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;sample.csv&quot;</span>, <span class="dt">data.table =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">VAR1 =</span> <span class="kw">iconv</span>(VAR1, <span class="dt">from =</span> <span class="st">&quot;UTF8&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;CP932&quot;</span>))</code></pre></div>
+</section></section>
+<section><section id="-" class="titleslide slide level1"><h1>関数とかオプションとか <br> 覚えられない</h1></section><section id="importdataset1" class="slide level2">
+<h2>RStudio の GUI 読み込み</h2>
+<p><img src="slide_img/dataimport.png" alt="dataimport" /></p>
+</section><section id="importdataset2" class="slide level2">
+<h2>RStudio の GUI 読み込み</h2>
+<p><img src="slide_img/dataimport2.png" alt="dataimport2" /></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="slide_files/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="slide_files/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: true,
+        // Transition style
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+
+
+        chalkboard: {
+          theme: 'whiteboard',
+        },
+
+        keyboard: {
+          67: function() { RevealChalkboard.toggleNotesCanvas() },    // toggle notes canvas when 'c' is pressed
+          66: function() { RevealChalkboard.toggleChalkboard() }, // toggle chalkboard when 'b' is pressed
+          46: function() { RevealChalkboard.clear() },    // clear chalkboard when 'DEL' is pressed
+           8: function() { RevealChalkboard.reset() },    // reset chalkboard data on current slide when 'BACKSPACE' is pressed
+          68: function() { RevealChalkboard.download() }, // downlad recorded chalkboard drawing when 'd' is pressed
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'slide_files/reveal.js-3.3.0.1/plugin/chalkboard/chalkboard.js', async: true },
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,368 @@
+---
+title: "初心者セッション 1 <br> データ読み込み編"
+author: "@y__mattu"
+date: "2017/12/16 Tokyo.R #66"
+output:
+  revealjs::revealjs_presentation:
+    transition: convex
+    css: for_revealjs.css
+    theme: sky
+    highlight: kate
+    center: true
+    self_contained: false
+    reveal_plugins: ["chalkboard"]
+    reveal_options:
+      slideNumber: true
+      chalkboard:
+        theme: whiteboard
+pandoc_args: [
+  '--from', 'markdown+autolink_bare_uris+tex_math_single_backslash-implicit_figures'
+]
+---
+
+```{r eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, comment=""}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      comment = "",
+                      fig.height = 10,
+                      fig.width = 10,
+                      out.height = 300,
+                      out.width = 300)
+options(dplyr.print_max = 1e9)
+```
+
+# はじめに
+
+## 誰？
+
+<div class="column1">
+- 松村優哉
+- <u>Twitter</u>: **y\_\_mattu**
+- <u>GitHub</u>: **ymattu**
+- M1
+- 計量経済学、ベイズ統計、因果推論、マーケティング
+- 言語: R(歴は 3 年), SAS, Python
+- https://ymattu.github.io/
+- http://y-mattu.hatenablog.com/
+- Tokyo.R / Japan.R 運営
+</div>
+
+<div class="column2">
+![icon](./slide_img/twitter_icon.jpg)
+</div>
+
+## アルバイトとか
+- コミュニケーションアプリの分析
+- Web 広告のログ解析
+- 電子コミックと医療システムに関する解析と開発 <br> ←イマココ
+- たまに受託(お仕事募集中です)
+
+## 著書(共著)
+![book](./slide_img/datasci.jpg)
+
+## 作ったパッケージ
+### [MlBayesOpt](https://github.com/ymattu/MlBayesOpt)
+- 機械学習のパラメーターをベイズ最適化でチューニングする R パッケージ
+- メンテ頑張ります...
+
+### [rjumanpp](https://github.com/ymattu/rjumanpp)
+- 形態素解析機 JUMAN++の R ラッパー
+- 最低限の機能しかないのでメンテ頑張ります...
+
+# さあ、R でデータ分析だ!
+## データ分析の流れ
+```{r echo=FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph data_analytics {
+
+      # graph
+      graph [overlap = true, fontsize = 10]
+
+      # node
+      node [shape=box,
+      fontname = Helvetica,
+      style = filled,
+      fillcolor = SteelBlue,
+      fontcolor = white]
+      データ取得;
+
+      node [shape = box,
+      fontname = Helvetica,
+      fillcolor = Gray,
+      fontcolor = black]
+      前処理; 可視化・モデリング;
+
+      # edge
+      データ取得->前処理
+      前処理->可視化・モデリング
+      }
+      ")
+```
+
+
+# データ分析の(おおまかな)流れ
+<div class="column1">
+```{r echo=FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph data_analytics {
+
+      # graph
+      graph [overlap = true, fontsize = 10]
+
+      # node
+      node [shape=box,
+      fontname = Helvetica,
+      style = filled,
+      fillcolor = SteelBlue,
+      fontcolor = white]
+      可視化・モデリング;
+
+      node [shape = box,
+      fontname = Helvetica,
+      fillcolor = Gray,
+      fontcolor = black]
+      データ取得; 前処理;
+
+      # edge
+      データ取得->前処理
+      前処理->可視化・モデリング
+      }
+      ")
+```
+</div>
+
+<div class="column2">
+今日のお話はここ
+</br>
+
+## 「**データの読み込み**」ですよね
+R で分析するためには、データを R に読み込まなければなりません。
+
+## こんな場面を想像してください
+(データ分析の方針がだいたい決まったので) <br>
+**あなた**「(上司)さん、R の環境整えたんでデータください!」<br>
+**上司**「OK、購買データはあの **tsv**ファイルで、商品マスタはあっちの **csv**。それぞれ **100MB** くらいだったかな。それと EC サイトのアクセスログは **データベース**にあって、データ定義は **エクセル**で来てるからあとで送るね。」<br>
+**あなた**「りょ、了解です。(データ形式くらい統一しとけよ...)」<br>
+
+## 悲しいことに。。。
+- 上記は、多少盛ってますが実話です。
+- データの読み込みに関しては、素人玄人関係なく同じ問題にぶつかります。
+    - データの形式(拡張子)はバラバラ
+
+
+## R でこれに対処するには？ {#howtodeal}
+0. RStudio でプロジェクトを作成
+    - ファイルの位置が分かりやすくなります
+1. 様々な読み込み関数を使って読み込み
+    - **ローカルにあるファイル**(今日の中心)
+    - **データベース**(今日は少しだけ)
+    - Web スクレイピング(またの機会に...)
+
+# RStudio でプロジェクトを作成
+## Project → New Project
+![project1](./slide_img/project1.png)
+
+## New Directory → New Project {#newproj}
+<div class="column1">
+![newdir](./slide_img/newdir.png)
+</div>
+
+<div class="column2">
+![newproj](./slide_img/newproj.png)
+</div>
+
+## ディレクトリ名を入力
+![dirname](./slide_img/dirname.png)
+
+## Done!
+- 読み込みの関数は、プロジェクトの中のファイルを探しにいきます。
+- `setwd()`
+を書く必要はありません
+
+# いよいよデータの読み込み
+## の前にもうひとつだけ
+### パッケージ内の関数の表記
+readr パッケージの read_csv 関数を使いたいとき
+```{r eval=FALSE}
+# 方法 1
+library(readr)
+dat <- read_csv("hoge.csv")
+
+# 方法 2
+dat <- readr::read_csv("hoge.csv")
+```
+
+# ローカルにあるファイル
+
+# csv
+## `read.csv()`
+- 多くの人が最初に習う関数
+```{r eval=FALSE}
+dat <- read.csv("sample.csv", stringAsFactors = FALSE)
+```
+
+## `readr::read_csv()`
+- 高速で、列の方をいい感じにやってくれる(オススメ)
+```{r eval=FALSE}
+library(readr)
+dat <- read_csv("sample.csv")
+```
+
+## `data.table::fread()`
+- `readr::read_csv`
+よりも高速
+- デフォルトでは、data.table というデータフレームとは別の形で読み込まれるのでデータフレームがいいときは `data.table = FALSE`
+
+```{r eval=FALSE}
+library(data.table)
+dat <- fread("sample.csv", data.table = FALSE)
+```
+
+## 高速ってどのくらい速いの？
+<div class="column1">
+### 検証用データ
+- Web ログデータ
+- csv
+- 300 万行× 5 列
+- 約 500MB
+</div>
+
+<div class="column2">
+### 検証環境
+- macOS High Sierra 10.13.2
+- Corei7
+- メモリ 16GB
+- R 3.4.3
+</div>
+
+## 時間を計測
+```{r eval=FALSE}
+system.time(dat <- read.csv("./data/log.csv"))
+system.time(dat2 <- readr::read_csv("./data/log.csv"))
+system.time(dat3 <- data.table::fread("./data/log.csv"))
+```
+
+# tsv
+## `read.tsv()`
+- `read.delim()`は区切り値のファイルを読む標準関数
+- `read.csv()`は `sep = ","`をつけたもの
+```{r eval=FALSE}
+dat <- read.delim("sample.tsv", stringAsFactors = FALSE)
+```
+
+## `readr::read_tsv`
+```{r eval=FALSE}
+library(readr)
+dat <- read_tsv("sample.tsv")
+```
+
+## `data.table::fread()` {#fread2}
+- 区切り値は勝手に判断
+```{r eval=FALSE}
+library(data.table)
+dat <- fread("sample.tsv", data.table = FALSE)
+```
+
+# その他の区切り値
+
+## `read.delim()`
+```{r eval=FALSE}
+dat <- read.delim("sample.tsv", stringAsFactors = FALSE, sep = "|")
+```
+
+## `readr::read_delim()`
+```{r eval=FALSE}
+library(readr)
+dat <- read_delim("sample.tsv", "|")
+```
+
+## `data.table::fread()` {#fread3}
+
+```{r eval=FALSE}
+library(data.table)
+dat <- fread("sample.tsv", data.table = FALSE)
+```
+
+# 結局？
+## どれがいいのか
+- **readr**パッケージの `read_***()`関数が一番オススメ
+- 速い、エンコーディングの調整が難しくない(後述)
+
+|                        | read.\*\*\* | read_\*\*\* | fread |
+|------------------------|----------|----------|-------|
+| 速さ(500MB)            | 約 1 分    | 8 秒      | 3 秒   |
+| 区切り地値の判定ミス   | ×        | ×        | △     |
+| エンコーディング | ○        | ○        | △     |
+
+# xlsx, xls
+## エクセルファイル
+### エクセルファイルを読み込めるパッケージ
+- xlsx
+- gdata
+- XLConnect
+- openxlsx
+- **redxl** → オススメ(速い、列の型をいい感じに読める)
+
+## 読み込み方
+```{r eval=FALSE}
+dat <- readxl::read_excel("sample.xlsx", sheet = "シート名")
+# シート名はシート番号でも OK
+```
+
+# その他の拡張子
+## SAS(.sas7bdat), STATA(.dta), SPSS(.sav)形式のファイル
+**haven** パッケージで読み込み
+
+#### SAS
+```{r eval=FALSE}
+dat <- haven::read_sas("sample.sas7bdat")
+```
+
+#### STATA
+```{r eval=FALSE}
+dat <- haven::read_dta("sample.dta")
+```
+
+#### SPSS
+```{r eval=FALSE}
+dat <- haven::read_sav("sample.sav")
+```
+
+# 文字コードの指定
+## エンコーディング問題
+- Windows の文字コードは **Shift-JIS（CP932）**
+- Mac の文字コードは **UTF8**
+- Windows で作られた（日本語を含む）ファイルを Mac で読むときは `Encoding=cp932`
+- Mac で作られた（日本語を含む）ファイルを Windows で読むときは `Encoding=UTF8`
+
+## csv を CP932 で読む
+### R の標準関数
+```{r eval=FALSE}
+dat <- read.csv("sample.csv", stringAsFactors = FALSE, fileEncoding = "cp932")
+```
+
+### readr
+```{r eval=FALSE}
+dat <- readr::read_csv("sample.csv", locale = locale(encoding = "cp932"))
+```
+
+### data.table
+```{r eval=FALSE}
+dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
+  dplyr::mutate(VAR1 = iconv(VAR1, from = "UTF8", to = "CP932"))
+```
+
+# 関数とかオプションとか <br> 覚えられない
+## RStudio の GUI 読み込み {#importdataset1}
+
+![dataimport](./slide_img/dataimport.png)
+
+
+## RStudio の GUI 読み込み {#importdataset2}
+![dataimport2](./slide_img/dataimport2.png)
