@@ -543,12 +543,15 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul>
 </section></section>
 <section><section id="r-" class="titleslide slide level1"><h1>さあ、R でデータ分析だ!</h1></section><section class="slide level2">
-<h2>データ分析の流れ</h2>
-<div id="htmlwidget-77ca0454271811bb8c1a" style="width:300px;height:300px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-77ca0454271811bb8c1a">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ取得;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      前処理; 可視化・モデリング;\n\n      # edge\n      データ取得->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-</section></section>
-<section><section id="-1" class="titleslide slide level1"><h1>データ分析の流れ</h1></section><section class="slide level2">
-<h2>「<strong>データの読み込み</strong>」ですよね</h2>
+<h2>データ分析の(おおまかな)流れ</h2>
+<div class="column1">
+<div id="htmlwidget-2ce27e7147d06c5943ff" style="width:300px;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2ce27e7147d06c5943ff">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="column2">
+<p>今日のお話はここ </br></p>
+</section><section id="-" class="slide level2">
+<h2>まずは何よりも、 <br> 「<strong>データの読み込み</strong>」ですよね</h2>
 <p>R で分析するためには、データを R に読み込まなければなりません。</p>
 </section><section class="slide level2">
 <h2>こんな場面を想像してください</h2>
@@ -653,9 +656,18 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 </div>
 </section><section class="slide level2">
 <h2>時間を計測</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))
-<span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))
-<span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
+<pre><code>   user  system elapsed 
+ 54.826   0.672  55.876 </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
+<pre><code>   user  system elapsed 
+  3.709   0.201   3.970 </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
+<pre><code>
+Read 70.2% of 3460200 rows
+Read 3460193 rows and 5 (of 5) columns from 0.477 GB file in 00:00:03</code></pre>
+<pre><code>   user  system elapsed 
+  2.332   0.148   2.502 </code></pre>
 </section></section>
 <section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.tsv" class="slide level2">
 <h2><code>read.tsv()</code></h2>
@@ -774,6 +786,26 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 </section><section id="importdataset2" class="slide level2">
 <h2>RStudio の GUI 読み込み</h2>
 <p><img src="slide_img/dataimport2.png" alt="dataimport2" /></p>
+</section></section>
+<section><section id="iroiroread" class="titleslide slide level1"><h1>R ならこんなデータも読めちゃうよシリーズ</h1></section><section class="slide level2">
+<h2>画像</h2>
+</section><section id="qrcode" class="slide level2">
+<h2>QR コード</h2>
+</section><section class="slide level2">
+<h2>音声</h2>
+</section><section class="slide level2">
+<h2>地理情報データ</h2>
+</section><section class="slide level2">
+<h2>データベース上のデータ</h2>
+</section></section>
+<section><section class="titleslide slide level1"><h1>まとめ</h1></section><section id="matome1" class="slide level2">
+<h2>なんか、R でデータ分析ができそうな気がしてきましたよね!？</h2>
+</section><section id="matome2" class="slide level2">
+<h2>本スライドは <strong>revealjs</strong>パッケージを <br> 用いて作成しています</h2>
+<p>下記 URL でソースコードを公開しています</p>
+<p><a href="https://github.com/ymattu/TokyoR66" class="uri">https://github.com/ymattu/TokyoR66</a></p>
+</section><section id="enjoy" class="slide level2">
+<h2>Enjoy!!</h2>
 </section></section>
     </div>
   </div>

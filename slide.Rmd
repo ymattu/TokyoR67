@@ -72,39 +72,7 @@ options(dplyr.print_max = 1e9)
 - 最低限の機能しかないのでメンテ頑張ります...
 
 # さあ、R でデータ分析だ!
-## データ分析の流れ
-```{r echo=FALSE}
-library(DiagrammeR)
-
-grViz("
-digraph data_analytics {
-
-      # graph
-      graph [overlap = true, fontsize = 10]
-
-      # node
-      node [shape=box,
-      fontname = Helvetica,
-      style = filled,
-      fillcolor = SteelBlue,
-      fontcolor = white]
-      データ取得;
-
-      node [shape = box,
-      fontname = Helvetica,
-      fillcolor = Gray,
-      fontcolor = black]
-      前処理; 可視化・モデリング;
-
-      # edge
-      データ取得->前処理
-      前処理->可視化・モデリング
-      }
-      ")
-```
-
-
-# データ分析の(おおまかな)流れ
+## データ分析の(おおまかな)流れ
 <div class="column1">
 ```{r echo=FALSE}
 library(DiagrammeR)
@@ -121,16 +89,16 @@ digraph data_analytics {
       style = filled,
       fillcolor = SteelBlue,
       fontcolor = white]
-      可視化・モデリング;
+      データ読み込み;
 
       node [shape = box,
       fontname = Helvetica,
       fillcolor = Gray,
       fontcolor = black]
-      データ取得; 前処理;
+      可視化・モデリング; 前処理;
 
       # edge
-      データ取得->前処理
+      データ読み込み->前処理
       前処理->可視化・モデリング
       }
       ")
@@ -141,7 +109,7 @@ digraph data_analytics {
 今日のお話はここ
 </br>
 
-## 「**データの読み込み**」ですよね
+## まずは何よりも、 <br> 「**データの読み込み**」ですよね
 R で分析するためには、データを R に読み込まなければなりません。
 
 ## こんな場面を想像してください
@@ -242,7 +210,7 @@ dat <- fread("sample.csv", data.table = FALSE)
 </div>
 
 ## 時間を計測
-```{r eval=FALSE}
+```{r eval=TRUE}
 system.time(dat <- read.csv("./data/log.csv"))
 system.time(dat2 <- readr::read_csv("./data/log.csv"))
 system.time(dat3 <- data.table::fread("./data/log.csv"))
@@ -366,3 +334,26 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 
 ## RStudio の GUI 読み込み {#importdataset2}
 ![dataimport2](./slide_img/dataimport2.png)
+
+
+# R ならこんなデータも読めちゃうよシリーズ {#iroiroread}
+
+## 画像
+
+## QR コード {#qrcode}
+
+## 音声
+
+## 地理情報データ
+
+## データベース上のデータ
+
+# まとめ
+## なんか、R でデータ分析ができそうな気がしてきましたよね!？ {#matome1}
+
+## 本スライドは **revealjs**パッケージを <br> 用いて作成しています {#matome2}
+下記 URL でソースコードを公開しています
+
+https://github.com/ymattu/TokyoR66
+
+## Enjoy!!
