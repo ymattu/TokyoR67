@@ -545,8 +545,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section><section id="r-" class="titleslide slide level1"><h1>さあ、R でデータ分析だ!</h1></section><section class="slide level2">
 <h2>データ分析の(おおまかな)流れ</h2>
 <div class="column1">
-<div id="htmlwidget-c9b6234b8984fcf0642b" style="width:300px;height:300px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c9b6234b8984fcf0642b">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2136eed273285a6d7063" style="width:300px;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2136eed273285a6d7063">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="column2">
 <p>今日のお話はここ </br></p>
@@ -658,26 +658,26 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <h2>時間を計測</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
- 54.555   0.661  55.583 </code></pre>
+ 55.032   0.874  56.872 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
-  3.675   0.288   4.694 </code></pre>
+  3.602   0.177   3.808 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>
-Read 70.5% of 3460200 rows
+Read 66.8% of 3460200 rows
 Read 3460193 rows and 5 (of 5) columns from 0.477 GB file in 00:00:03</code></pre>
 <pre><code>   user  system elapsed 
-  2.324   0.154   2.524 </code></pre>
+  2.413   0.131   2.561 </code></pre>
 </section></section>
-<section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.tsv" class="slide level2">
-<h2><code>read.tsv()</code></h2>
+<section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.delim" class="slide level2">
+<h2><code>read.delim()</code></h2>
 <ul>
 <li><code>read.delim()</code>は区切り値のファイルを読む標準関数</li>
 <li><code>read.csv()</code>は <code>sep = &quot;,&quot;</code>をつけたもの</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </section><section id="readrread_tsv" class="slide level2">
-<h2><code>readr::read_tsv</code></h2>
+<h2><code>readr::read_tsv()</code></h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 dat &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;sample.tsv&quot;</span>)</code></pre></div>
 </section><section id="fread2" class="slide level2">
@@ -688,7 +688,7 @@ dat &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
 dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">data.table =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </section></section>
-<section><section class="titleslide slide level1"><h1>その他の区切り値</h1></section><section id="read.delim" class="slide level2">
+<section><section class="titleslide slide level1"><h1>その他の区切り値</h1></section><section id="read.delim-1" class="slide level2">
 <h2><code>read.delim()</code></h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>, <span class="dt">sep =</span> <span class="st">&quot;|&quot;</span>)</code></pre></div>
 </section><section id="readrread_delim" class="slide level2">
@@ -745,7 +745,7 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <li>gdata</li>
 <li>XLConnect</li>
 <li>openxlsx</li>
-<li><strong>redxl</strong> → オススメ(速い、列の型をいい感じに読める)</li>
+<li><strong>readxl</strong> → オススメ(速い、列の型をいい感じに読める)</li>
 </ul>
 </section><section class="slide level2">
 <h2>読み込み方</h2>
@@ -799,7 +799,7 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <li><strong>DBI</strong>(データベースへの接続)</li>
 <li><strong>dplyr(dbplyr)</strong>(データベースのテーブル操作)</li>
 <li><strong>sparklyr</strong>(Spark, AWS S3)</li>
-<li><strong>bigquey</strong>(Big Query)</li>
+<li><strong>bigrquey</strong>(Big Query)</li>
 <li>RStudio の Connection タブ</li>
 </ul>
 </section><section class="slide level2">

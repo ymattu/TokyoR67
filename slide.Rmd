@@ -218,14 +218,14 @@ system.time(dat3 <- data.table::fread("./data/log.csv"))
 ```
 
 # tsv
-## `read.tsv()`
+## `read.delim()`
 - `read.delim()`は区切り値のファイルを読む標準関数
 - `read.csv()`は `sep = ","`をつけたもの
 ```{r eval=FALSE}
 dat <- read.delim("sample.tsv", stringAsFactors = FALSE)
 ```
 
-## `readr::read_tsv`
+## `readr::read_tsv()`
 ```{r eval=FALSE}
 library(readr)
 dat <- read_tsv("sample.tsv")
@@ -276,7 +276,7 @@ dat <- fread("sample.tsv", data.table = FALSE)
 - gdata
 - XLConnect
 - openxlsx
-- **redxl** → オススメ(速い、列の型をいい感じに読める)
+- **readxl** → オススメ(速い、列の型をいい感じに読める)
 
 ## 読み込み方
 ```{r eval=FALSE}
@@ -345,7 +345,7 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 - **DBI**(データベースへの接続)
 - **dplyr(dbplyr)**(データベースのテーブル操作)
 - **sparklyr**(Spark, AWS S3)
-- **bigquey**(Big Query)
+- **bigrquey**(Big Query)
 - RStudio の Connection タブ
 
 ## データベース関連の参考資料たち
