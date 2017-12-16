@@ -545,8 +545,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section><section id="r-" class="titleslide slide level1"><h1>さあ、R でデータ分析だ!</h1></section><section class="slide level2">
 <h2>データ分析の(おおまかな)流れ</h2>
 <div class="column1">
-<div id="htmlwidget-2ce27e7147d06c5943ff" style="width:300px;height:300px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2ce27e7147d06c5943ff">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c9b6234b8984fcf0642b" style="width:300px;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c9b6234b8984fcf0642b">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="column2">
 <p>今日のお話はここ </br></p>
@@ -658,16 +658,16 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <h2>時間を計測</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
- 54.826   0.672  55.876 </code></pre>
+ 54.555   0.661  55.583 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
-  3.709   0.201   3.970 </code></pre>
+  3.675   0.288   4.694 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>
-Read 70.2% of 3460200 rows
+Read 70.5% of 3460200 rows
 Read 3460193 rows and 5 (of 5) columns from 0.477 GB file in 00:00:03</code></pre>
 <pre><code>   user  system elapsed 
-  2.332   0.148   2.502 </code></pre>
+  2.324   0.154   2.524 </code></pre>
 </section></section>
 <section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.tsv" class="slide level2">
 <h2><code>read.tsv()</code></h2>
@@ -787,16 +787,42 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <h2>RStudio の GUI 読み込み</h2>
 <p><img src="slide_img/dataimport2.png" alt="dataimport2" /></p>
 </section></section>
-<section><section id="iroiroread" class="titleslide slide level1"><h1>R ならこんなデータも読めちゃうよシリーズ</h1></section><section class="slide level2">
-<h2>画像</h2>
-</section><section id="qrcode" class="slide level2">
-<h2>QR コード</h2>
+<section><section class="titleslide slide level1"><h1>データベース(クラウド)編</h1></section><section class="slide level2">
+<h2>データベースやクラウド上のデータ</h2>
+<ul>
+<li>企業にデータは膨大なのでクラウドにデータを置くことがとても多い</li>
+<li>こういうデータを R から直接触れたら嬉しいですよね！</li>
+</ul>
 </section><section class="slide level2">
-<h2>音声</h2>
+<h2>便利パッケージたち</h2>
+<ul>
+<li><strong>DBI</strong>(データベースへの接続)</li>
+<li><strong>dplyr(dbplyr)</strong>(データベースのテーブル操作)</li>
+<li><strong>sparklyr</strong>(Spark, AWS S3)</li>
+<li><strong>bigquey</strong>(Big Query)</li>
+<li>RStudio の Connection タブ</li>
+</ul>
 </section><section class="slide level2">
-<h2>地理情報データ</h2>
-</section><section class="slide level2">
-<h2>データベース上のデータ</h2>
+<h2>データベース関連の参考資料たち</h2>
+<ul>
+<li><a href="https://qiita.com/nozma/items/f9a20d9ce0f7bfbdf628">dplyr でデータベース操作</a></li>
+<li><a href="https://qiita.com/uri/items/5a90f1c1c5edc8813c01">PostgreSQL からスキーマを指定してデータを参照する</a></li>
+<li><a href="https://speakerdeck.com/yutannihilation/korekarahakonefalseshi-dai">これからはコネの時代</a></li>
+</ul>
+</section></section>
+<section><section id="web-" class="titleslide slide level1"><h1>Web スクレイピング</h1></section><section class="slide level2">
+<h2>時間がないので省略</h2>
+<p>気になる方は <strong>rvest</strong>や<strong>RSelenium</strong>、<strong>rtweet</strong>パッケージを検索!</p>
+</section></section>
+<section><section id="-" class="titleslide slide level1"><h1>もっと! もっと!</h1></section><section id="others" class="slide level2">
+<h2>R は他にもいろいろなデータを読み込めます</h2>
+<ul>
+<li>地理情報データ</li>
+<li>画像</li>
+<li>音声</li>
+<li>etc…</li>
+</ul>
+<p>ググると、意外といろいろ出てきます</p>
 </section></section>
 <section><section class="titleslide slide level1"><h1>まとめ</h1></section><section id="matome1" class="slide level2">
 <h2>なんか、R でデータ分析ができそうな気がしてきましたよね!？</h2>

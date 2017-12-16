@@ -71,6 +71,7 @@ options(dplyr.print_max = 1e9)
 - 形態素解析機 JUMAN++の R ラッパー
 - 最低限の機能しかないのでメンテ頑張ります...
 
+
 # さあ、R でデータ分析だ!
 ## データ分析の(おおまかな)流れ
 <div class="column1">
@@ -335,18 +336,35 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 ## RStudio の GUI 読み込み {#importdataset2}
 ![dataimport2](./slide_img/dataimport2.png)
 
+# データベース(クラウド)編
+## データベースやクラウド上のデータ
+- 企業にデータは膨大なのでクラウドにデータを置くことがとても多い
+- こういうデータを R から直接触れたら嬉しいですよね！
 
-# R ならこんなデータも読めちゃうよシリーズ {#iroiroread}
+## 便利パッケージたち
+- **DBI**(データベースへの接続)
+- **dplyr(dbplyr)**(データベースのテーブル操作)
+- **sparklyr**(Spark, AWS S3)
+- **bigquey**(Big Query)
+- RStudio の Connection タブ
 
-## 画像
+## データベース関連の参考資料たち
+- [dplyr でデータベース操作](https://qiita.com/nozma/items/f9a20d9ce0f7bfbdf628)
+- [PostgreSQL からスキーマを指定してデータを参照する](https://qiita.com/uri/items/5a90f1c1c5edc8813c01)
+- [これからはコネの時代](https://speakerdeck.com/yutannihilation/korekarahakonefalseshi-dai)
 
-## QR コード {#qrcode}
+# Web スクレイピング
+## 時間がないので省略
+気になる方は **rvest**や**RSelenium**、**rtweet**パッケージを検索!
 
-## 音声
+# もっと! もっと!
+## R は他にもいろいろなデータを読み込めます {#others}
+- 地理情報データ
+- 画像
+- 音声
+- etc...
 
-## 地理情報データ
-
-## データベース上のデータ
+ググると、意外といろいろ出てきます
 
 # まとめ
 ## なんか、R でデータ分析ができそうな気がしてきましたよね!？ {#matome1}
