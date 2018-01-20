@@ -1,7 +1,7 @@
 ---
 title: "初心者セッション 1 <br> データ読み込み編"
 author: "@y__mattu"
-date: "2017/12/16 Tokyo.R #66"
+date: "2018/1/20 Tokyo.R #67"
 output:
   revealjs::revealjs_presentation:
     transition: convex
@@ -52,12 +52,6 @@ options(dplyr.print_max = 1e9)
 <div class="column2">
 ![icon](./slide_img/twitter_icon.jpg)
 </div>
-
-## アルバイトとか
-- コミュニケーションアプリの分析
-- Web 広告のログ解析
-- 電子コミックと医療システムに関する解析と開発 <br> ←イマココ
-- たまに受託(お仕事募集中です)
 
 ## 著書(共著)
 ![book](./slide_img/datasci.jpg)
@@ -222,7 +216,7 @@ system.time(dat3 <- data.table::fread("./data/log.csv"))
 - `read.delim()`は区切り値のファイルを読む標準関数
 - `read.csv()`は `sep = ","`をつけたもの
 ```{r eval=FALSE}
-dat <- read.delim("sample.tsv", stringAsFactors = FALSE)
+dat <- read.delim("sample.tsv", sep = "\t",stringAsFactors = FALSE)
 ```
 
 ## `readr::read_tsv()`
@@ -372,6 +366,6 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 ## 本スライドは **revealjs**パッケージを <br> 用いて作成しています {#matome2}
 下記 URL でソースコードを公開しています
 
-https://github.com/ymattu/TokyoR66
+https://github.com/ymattu/TokyoR67
 
 ## Enjoy!!

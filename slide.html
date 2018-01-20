@@ -497,7 +497,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section>
     <h1 class="title">初心者セッション 1 <br> データ読み込み編</h1>
     <h2 class="author"><span class="citation" data-cites="y__mattu">@y__mattu</span></h2>
-    <h3 class="date">2017/12/16 Tokyo.R #66</h3>
+    <h3 class="date">2018/1/20 Tokyo.R #67</h3>
 </section>
 
 <section><section class="titleslide slide level1"><h1>はじめに</h1></section><section class="slide level2">
@@ -519,14 +519,6 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <p><img src="slide_img/twitter_icon.jpg" alt="icon" /></p>
 </div>
 </section><section class="slide level2">
-<h2>アルバイトとか</h2>
-<ul>
-<li>コミュニケーションアプリの分析</li>
-<li>Web 広告のログ解析</li>
-<li>電子コミックと医療システムに関する解析と開発 <br> ←イマココ</li>
-<li>たまに受託(お仕事募集中です)</li>
-</ul>
-</section><section class="slide level2">
 <h2>著書(共著)</h2>
 <p><img src="slide_img/datasci.jpg" alt="book" /></p>
 </section><section class="slide level2">
@@ -545,8 +537,8 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <section><section id="r-" class="titleslide slide level1"><h1>さあ、R でデータ分析だ!</h1></section><section class="slide level2">
 <h2>データ分析の(おおまかな)流れ</h2>
 <div class="column1">
-<div id="htmlwidget-2136eed273285a6d7063" style="width:300px;height:300px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2136eed273285a6d7063">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ba64ca3eb1c8996e9761" style="width:300px;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba64ca3eb1c8996e9761">{"x":{"diagram":"\ndigraph data_analytics {\n\n      # graph\n      graph [overlap = true, fontsize = 10]\n\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;\n\n      node [shape = box,\n      fontname = Helvetica,\n      fillcolor = Gray,\n      fontcolor = black]\n      可視化・モデリング; 前処理;\n\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="column2">
 <p>今日のお話はここ </br></p>
@@ -658,16 +650,16 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 <h2>時間を計測</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
- 55.032   0.874  56.872 </code></pre>
+ 56.012   0.726  58.160 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat2 &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>   user  system elapsed 
-  3.602   0.177   3.808 </code></pre>
+  3.685   0.171   3.891 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dat3 &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="st">&quot;./data/log.csv&quot;</span>))</code></pre></div>
 <pre><code>
-Read 66.8% of 3460200 rows
+Read 62.4% of 3460200 rows
 Read 3460193 rows and 5 (of 5) columns from 0.477 GB file in 00:00:03</code></pre>
 <pre><code>   user  system elapsed 
-  2.413   0.131   2.561 </code></pre>
+  2.517   0.125   2.676 </code></pre>
 </section></section>
 <section><section id="tsv" class="titleslide slide level1"><h1>tsv</h1></section><section id="read.delim" class="slide level2">
 <h2><code>read.delim()</code></h2>
@@ -675,7 +667,7 @@ Read 3460193 rows and 5 (of 5) columns from 0.477 GB file in 00:00:03</code></pr
 <li><code>read.delim()</code>は区切り値のファイルを読む標準関数</li>
 <li><code>read.csv()</code>は <code>sep = &quot;,&quot;</code>をつけたもの</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;sample.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>,<span class="dt">stringAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </section><section id="readrread_tsv" class="slide level2">
 <h2><code>readr::read_tsv()</code></h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
@@ -829,7 +821,7 @@ dat &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st"
 </section><section id="matome2" class="slide level2">
 <h2>本スライドは <strong>revealjs</strong>パッケージを <br> 用いて作成しています</h2>
 <p>下記 URL でソースコードを公開しています</p>
-<p><a href="https://github.com/ymattu/TokyoR66" class="uri">https://github.com/ymattu/TokyoR66</a></p>
+<p><a href="https://github.com/ymattu/TokyoR67" class="uri">https://github.com/ymattu/TokyoR67</a></p>
 </section><section id="enjoy" class="slide level2">
 <h2>Enjoy!!</h2>
 </section></section>
